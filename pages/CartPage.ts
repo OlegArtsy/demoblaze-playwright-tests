@@ -92,8 +92,7 @@ export class CartPage {
   }
 
   // delete clears the tbody and re-renders the remaining rows,
-  // so the row count can drop to 0 for a moment. poll until it
-  // settles to what we expect.
+  // so the row count can drop to 0 for a moment — toHaveCount retries until it settles.
   async removeItem(title: string) {
     const before = await this.cartRows.count();
     const target = before - 1;
@@ -101,7 +100,7 @@ export class CartPage {
     const row = this.cartRows.filter({ hasText: title }).first();
     await row.locator('a', { hasText: 'Delete' }).click();
 
-    await expect.poll(() => this.cartRows.count(), { timeout: 10000 }).toBe(target);
+    await expect(this.cartRows).toHaveCount(target);
     await expect(this.cartRows.filter({ hasText: title })).toHaveCount(0);
   }
 
