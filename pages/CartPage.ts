@@ -85,12 +85,8 @@ export class CartPage {
   }
 
   async getDisplayedTotal() {
-    // total is filled by ajax, wait until it's not empty
-    await expect
-      .poll(async () => ((await this.totalLabel.textContent()) ?? '').trim(), {
-        timeout: 10000,
-      })
-      .not.toBe('');
+    // total is filled by ajax — let the web-first assertion retry until it's non-empty
+    await expect(this.totalLabel).not.toHaveText('');
     const raw = ((await this.totalLabel.textContent()) ?? '').trim();
     return Number(raw);
   }

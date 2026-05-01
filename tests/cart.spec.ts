@@ -48,8 +48,8 @@ test.describe('Shopping cart', () => {
     await test.step('cart has both items + correct total', async () => {
       await cart.goto();
 
-      // rows arrive via ajax, poll until both are there
-      await expect.poll(() => cart.getItemCount(), { timeout: 10000 }).toBe(2);
+      // rows arrive via ajax — toHaveCount retries automatically
+      await expect(cart.cartRows).toHaveCount(2);
 
       const items = await cart.getItems();
       const titles = items.map((i) => i.title);
@@ -93,7 +93,7 @@ test.describe('Shopping cart', () => {
 
     await test.step('open cart, both items are there', async () => {
       await cart.goto();
-      await expect.poll(() => cart.getItemCount(), { timeout: 10000 }).toBe(2);
+      await expect(cart.cartRows).toHaveCount(2);
     });
 
     await test.step('delete the first item', async () => {

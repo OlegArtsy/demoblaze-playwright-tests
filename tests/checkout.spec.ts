@@ -25,7 +25,7 @@ test.describe('Checkout', () => {
 
     await test.step('open cart and start place-order', async () => {
       await cart.goto();
-      await expect.poll(() => cart.getItemCount(), { timeout: 10000 }).toBe(1);
+      await expect(cart.cartRows).toHaveCount(1);
       await cart.openPlaceOrderModal();
     });
 
@@ -65,7 +65,7 @@ test.describe('Checkout', () => {
 
     await test.step('open place-order, submit empty form', async () => {
       await cart.goto();
-      await expect.poll(() => cart.getItemCount(), { timeout: 10000 }).toBe(1);
+      await expect(cart.cartRows).toHaveCount(1);
       await cart.openPlaceOrderModal();
 
       const alertMessage = await cart.submitPurchaseExpectingValidationAlert();
